@@ -198,15 +198,17 @@ func computeGroupUpdate(original, updated *cb.ConfigGroup) (readSet, writeSet *c
 		}
 
 		return &cb.ConfigGroup{
-				Version:  original.Version,
-				Policies: readSetPolicies,
-				Values:   readSetValues,
-				Groups:   readSetGroups,
+				Version:   original.Version,
+				Policies:  readSetPolicies,
+				Values:    readSetValues,
+				Groups:    readSetGroups,
+				ModPolicy: original.ModPolicy,
 			}, &cb.ConfigGroup{
-				Version:  original.Version,
-				Policies: writeSetPolicies,
-				Values:   writeSetValues,
-				Groups:   writeSetGroups,
+				Version:   original.Version,
+				Policies:  writeSetPolicies,
+				Values:    writeSetValues,
+				Groups:    writeSetGroups,
+				ModPolicy: updated.ModPolicy,
 			}, true
 	}
 
@@ -228,10 +230,11 @@ func computeGroupUpdate(original, updated *cb.ConfigGroup) (readSet, writeSet *c
 	updated.Version = original.Version + 1
 
 	return &cb.ConfigGroup{
-			Version:  original.Version,
-			Policies: readSetPolicies,
-			Values:   readSetValues,
-			Groups:   readSetGroups,
+			Version:   original.Version,
+			Policies:  readSetPolicies,
+			Values:    readSetValues,
+			Groups:    readSetGroups,
+			ModPolicy: original.ModPolicy,
 		}, &cb.ConfigGroup{
 			Version:   original.Version + 1,
 			Policies:  writeSetPolicies,

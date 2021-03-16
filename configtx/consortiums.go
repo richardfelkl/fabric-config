@@ -19,6 +19,7 @@ import (
 type Consortium struct {
 	Name          string
 	Organizations []Organization
+	ModPolicy     string
 }
 
 // ConsortiumsGroup encapsulates the parts of the config that control consortiums.
@@ -67,6 +68,10 @@ func (c *ConfigTx) Consortium(name string) *ConsortiumGroup {
 // If the consortium already exists in the current configuration, its value will be overwritten.
 func (c *ConsortiumsGroup) SetConsortium(consortium Consortium) error {
 	c.consortiumsGroup.Groups[consortium.Name] = newConfigGroup()
+	c.consortiumsGroup.Groups[consortium.Name].ModPolicy = ordererAdminsPolicyName
+	if consortium.ModPolicy != "" {
+		c.consortiumsGroup.Groups[consortium.Name].ModPolicy = consortium.ModPolicy
+	}
 
 	for _, org := range consortium.Organizations {
 		err := c.consortium(consortium.Name).SetOrganization(org)
